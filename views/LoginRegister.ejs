@@ -32,14 +32,15 @@
         }
     </style>
     <!-- Custom styles for this template -->
-    <link href="signin.css" rel="stylesheet">
+    <link href="css/signin.css" rel="stylesheet">
 </head>
 
 <body class="text-center">
     <form class="form-signin registerForm" action = "/Register" method="POST">
         <h1 class="h3 mb-3 font-weight-normal">Please Register</h1>
+        <input id="inputEmail" name="Name" class="form-control" placeholder="Your Name" required autofocus>
         <label for="inputEmail" class="sr-only">User Name</label>
-        <input id="inputEmail" name="userName" class="form-control" placeholder="User Name" required autofocus>
+        <input id="inputEmail" name="userName" class="form-control" placeholder="User Name" required>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" name ="userPassword" id="inputPassword" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
@@ -54,6 +55,7 @@
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" name ="userPassword" id="inputPassword" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block type="submit"" >Log in</button>
+        
         <p class="mt-5 mb-3 text-muted">&copy; Quizzler</p>
     </form>
 
