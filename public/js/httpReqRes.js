@@ -2,8 +2,9 @@
 
 // $(".site-logo")
 // $(".site-logo").click(function(){
-//     $.get("/", function(data){
-//       userID= data;
-//       alert("user id is "+ userID);
+//     $.get("/a", function(data){
+      
+//       userID= data.userID;
+//       console.log(userID);
 //     });
 // });
