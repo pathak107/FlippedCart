@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -12,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //initializing sessions
 app.use(session({
-   secret: 'keyboard cat',
+   secret: process.env.SESSION_SECRET,
    resave: true,
    saveUninitialized: true,
    cookie: { secure: false , sameSite : true }

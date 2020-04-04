@@ -2,7 +2,7 @@ use flipcart;
 
 create table customer
 (
-custID int,
+custID int auto_increment,
 custName varchar(50),
 userName varchar(50),
 pass varchar(50),
@@ -15,14 +15,14 @@ primary key(custID)
 
 create table Category
 (
-catID int,
+catID int auto_increment,
 Category varchar(50),
 primary key(catID)
 );
 
 create table Products
 (
-PID int,
+PID int auto_increment,
 productName varchar(50),
 productCost int ,
 descShort varchar(50),
@@ -52,11 +52,6 @@ primary key(custID,PID),
 foreign key (custID) references customer(custID),
 foreign key (PID) references Products(PID)
 );
-
-
-
-
-
 
 
 
