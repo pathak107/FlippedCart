@@ -6,7 +6,7 @@ create table Customer(
     contact varchar(12),
     accountNumber varchar(50)	
 );
-
+select * from Customer;
 create table Category
 ( cat_id integer primary key,
   Category varchar(100)
@@ -23,30 +23,28 @@ create table Products
     foreign key(cat_id) references Category(cat_id)
 );
 
-create table CartItem
-( cust_id integer,
-  p_id integer,
-  primary key(cust_id,p_id)
+create table Cart
+(
+cart_id integer primary key,
+cust_id integer,
+p_id integer,
+foreign key(p_id) references Products(p_id),
+foreign key(cust_id) references Customer(cust_id)
 );
 
-create table Orders(			
-    o_id primary key,
-    Order_date text,	
-    Order_Status varchar(100),
-    cust_id integer,
-    foreign key(cust_id) references Customer(cust_id)
+create table orders(
+o_id integer primary key,
+cust_id integer,
+p_id integer,
+orderDate text default (datetime('now', 'localtime')),
+orderStatus varchar(100) default "processing order",
+foreign key (cust_id) references Customer(cust_id),
+foreign key (p_id) references Products(p_id)
 );
 
+select name,cost,image from Products natural join CartItem where cust_id= 3 and Products.p_id = CartItem.p_id;
 
-create table OrderItems(		
-    cust_id integer,
-    p_id integer,
-    o_id integer,
-    Primary key (p_id,o_id),
-    foreign key(cust_id) references Customer(cust_id),
-    foreign key(p_id) references Product(p_id),
-    foreign key(o_id) references Orders(o_id)
-);
+
 
 insert into Category(Category) values ("Mobile");
 insert into Category(Category) values ("Tshirt");
@@ -125,6 +123,8 @@ values (
 );
 
 delete from Products where p_id=3;
+
+SELECT * from Category;
 
 
 

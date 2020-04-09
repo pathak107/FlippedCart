@@ -99,8 +99,23 @@ app.route('/Login')
 
 //Cart route
 app.get('/cart', (req, res) => {
-   res.render('cart.ejs');
-   console.log(req.session.cust_id);
+   if(req.session.cust_id==undefined)
+   {
+      return res.redirect('/Login');
+   }
+   var query="select name,cost,image from Products natural join Cart where cust_id= ? and Products.p_id = Cart.p_id;"
+   db.serialize(()=>{
+      var item;
+      db.all(query,[req.session.cust_id],(err,rows)=>{
+         if(err) console.log(err);
+         item=rows;
+      });
+      db.get('select sum(cost) as total from Products natural join Cart where cust_id= ? and Products.p_id = Cart.p_id;',[req.session.cust_id],(err,row)=>{
+         res.render('cart.ejs',{item:item,allItems:row});
+      })
+
+   })
+   
 });
 app.post('/cart',(req,res)=>{
    if(req.session.cust_id==undefined)
@@ -108,7 +123,7 @@ app.post('/cart',(req,res)=>{
       res.json({message:"unauthorized"});
    }
    else{
-      db.run("insert into CartItem(cust_id,p_id) values (?,?)",[req.session.cust_id,req.body.p_id],(err)=>{
+      db.run("insert into Cart(cust_id,p_id) values (?,?)",[req.session.cust_id,req.body.p_id],(err)=>{
          if(err) console.log(err);
          console.log("Item inserted in Cart");
          res.sendStatus(200);
@@ -154,9 +169,38 @@ app.get('/category/:cat_id',(req,res)=>{
    })
 });
 
+
+//Checkout Route
 app.get('/checkout', (req, res) => {
+   if(req.session.cust_id=undefined)
+   {
+      return res.redirect('/Login');
+   }
    res.render('checkout.ejs');
 });
+app.post('/checkout',(req,res)=>{
+   db.serialize(()=>{
+      var query1="UPDATE Customer SET Address=?,contact=?,accountNumber=? WHERE cust_id=?;"
+      db.run(query1,[req.body.address,req.body.contact,req.body.accountNumber,req.session.cust_id],(err)=>{
+         if(err) console.log(err);
+      });
+
+      var query2="INSERT INTO  orders(cust_id, p_id) SELECT cust_id,p_id FROM Cart WHERE cust_id=?;";
+      db.run(query2,[req.session.cust_id],(err)=>{
+         if(err) console.log(err);
+         console.log("Ordered Successfully");
+         
+      })
+      
+      db.run('delete from Cart where cust_id=?',[req.session.cust_id],(err)=>{
+         if(err) console.log(err);
+         console.log("Cleared Cart");
+         res.redirect('/Category');
+      })
+   });
+});
+
+
 
 //Products route
 app.use('/product/:p_id',express.static('public'));

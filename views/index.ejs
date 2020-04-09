@@ -96,15 +96,13 @@
 			<%for(var i =0;i< products.length;i++) { %>
 			<div class="product-item">
 				<div class="pi-pic">
+					<a href="/product/<%=products[i].p_id%>">
 					<img src="./img/product/<%=products[i].image%>" alt="">
-					<div class="pi-links">
-						<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-						<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-					</div>
+					</a>
 				</div>
 				<div class="pi-text">
 					<h6>₹<%=products[i].cost%></h6>
-					<p><%=products[i].DescriptionShort%> </p>
+					<a href="/product/<%=products[i].p_id%>"><p><%=products[i].DescriptionShort%></p></a>
 				</div>
 			</div>
 			<%}%>
