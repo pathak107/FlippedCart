@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //initializing sessions
 app.use(session({
-   secret: process.env.SESSION_SECRET,
+   secret: "extremesecret",
    resave: true,
    saveUninitialized: true,
    cookie: { secure: false , sameSite : true }
