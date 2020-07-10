@@ -42,9 +42,9 @@
 							$.post("/cart", {
 								p_id: "<%=product.p_id%>"
 							}, function (data, status) {
-								
-								if(status=="200"){
-									$("#cartStatus").append("Added to Cart");
+								console.log(status);
+								if(status=="success"){
+									window.alert("Product added to cart !");
 								}
 								else if(data.message=="unauthorized"){
 									window.location.href = "/Login";
@@ -71,7 +71,7 @@
 								<div class="panel-body">
 									<h4>7 Days Returns</h4>
 									<p>Cash on Delivery Available<br>Home Delivery <span>3 - 4 days</span></p>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integer bibendum sodales arcu id te mpus. Ut consectetur lacus leo, non scelerisque nulla euismod nec.</p>
+									<p>We take full guarantee of the product delivery. The product will be delivered by our trusted agents.</p>
 								</div>
 							</div>
 						</div>

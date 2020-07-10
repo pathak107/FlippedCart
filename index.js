@@ -103,7 +103,7 @@ app.get('/cart', (req, res) => {
    {
       return res.redirect('/Login');
    }
-   var query="select name,cost,image from Products natural join Cart where cust_id= ? and Products.p_id = Cart.p_id;"
+   var query="select p_id,name,cost,image from Products natural join Cart where cust_id= ? and Products.p_id = Cart.p_id;"
    db.serialize(()=>{
       var item;
       db.all(query,[req.session.cust_id],(err,rows)=>{
@@ -131,6 +131,20 @@ app.post('/cart',(req,res)=>{
    }
    
 });
+app.delete('/cart/:p_id',(req,res)=>{
+   if(req.session.cust_id==undefined)
+   {
+      res.json({message:"unauthorized"});
+   }
+   else{
+      var p_id=req.params.p_id;
+      db.run("Delete from Cart where cust_id=? AND p_id=?",[req.session.cust_id,p_id],(err)=>{
+         if(err) console.log(err);
+         console.log("Item deletd from Cart");
+         res.sendStatus(200);
+      })
+   }
+})
 
 
 
@@ -172,31 +186,37 @@ app.get('/category/:cat_id',(req,res)=>{
 
 //Checkout Route
 app.get('/checkout', (req, res) => {
-   if(req.session.cust_id=undefined)
+   if(req.session.cust_id==undefined)
    {
       return res.redirect('/Login');
    }
    res.render('checkout.ejs');
 });
 app.post('/checkout',(req,res)=>{
+   if(req.session.cust_id==undefined)
+   {
+      return res.redirect('/Login');
+   }
+   console.log(req.session.cust_id);
    db.serialize(()=>{
       var query1="UPDATE Customer SET Address=?,contact=?,accountNumber=? WHERE cust_id=?;"
       db.run(query1,[req.body.address,req.body.contact,req.body.accountNumber,req.session.cust_id],(err)=>{
          if(err) console.log(err);
+         console.log("Updated Customer");
       });
 
       var query2="INSERT INTO  orders(cust_id, p_id) SELECT cust_id,p_id FROM Cart WHERE cust_id=?;";
       db.run(query2,[req.session.cust_id],(err)=>{
          if(err) console.log(err);
          console.log("Ordered Successfully");
-         
-      })
-      
+      });
       db.run('delete from Cart where cust_id=?',[req.session.cust_id],(err)=>{
          if(err) console.log(err);
          console.log("Cleared Cart");
-         res.redirect('/Category');
-      })
+         res.redirect('/orders');
+      });
+      
+      
    });
 });
 
@@ -217,6 +237,22 @@ app.get('/contact', (req, res) => {
    res.render('contact.ejs');
 });
 
+
+
+//Orders  Route
+app.get('/orders',(req,res)=>{
+   if(req.session.cust_id==undefined)
+   {
+      return res.redirect('/Login');
+   }
+   var query="select name,cost,image,Address,orderDate,orderStatus from Products natural join orders natural join Customer where Orders.cust_id=? and Customer.cust_id=? and Products.p_id = orders.p_id order by orderDate DESC;;"
+   db.serialize(()=>{
+      db.all(query,[req.session.cust_id,req.session.cust_id],(err,rows)=>{
+         if(err) console.log(err);
+         res.render('orders.ejs',{item:rows});
+      });
+   })
+})
 
 
 
