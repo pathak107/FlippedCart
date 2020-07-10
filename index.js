@@ -13,8 +13,6 @@ var db = new sqlite3.Database('./Database.db',(err)=>{
    console.log("Connected to Database");
 })
 
-
-
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
