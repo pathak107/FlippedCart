@@ -17,7 +17,16 @@
   },
   "homepage": "https://github.com/pathak107/FlippedCart#readme",
   "dependencies": {
+    "admin-bro": "^2.8.0",
+    "admin-bro-expressjs": "^2.1.1",
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
     "ejs": "^3.0.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-formidable": "^1.2.0",
+    "express-session": "^1.17.0",
+    "mysql": "^2.18.1",
+    "sqlite3": "^4.1.1"
   }
 }

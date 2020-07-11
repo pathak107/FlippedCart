@@ -1,0 +1,85 @@
+<%- include('header.ejs'); -%>
+
+
+<!-- Page info -->
+<div class="page-top-info">
+    <div class="container">
+        <h4>Your orders</h4>
+        <div class="site-pagination">
+            <a href="/">Home</a> /
+            <a href="/orders">Your orders</a>
+        </div>
+    </div>
+</div>
+<!-- Page info end -->
+
+
+<!-- cart section end -->
+<section class="cart-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="cart-table">
+                    <% if(item.length > 0){ %>
+						<h3>Your Orders</h3>
+						
+					<% }else{ %>
+						<h3>You haven't ordered anything yet!</h3>
+					<%}%>
+
+                    <div class="cart-table-warp">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="product-th">Product</th>
+                                    <th class="total-th">Price</th>
+                                    <th class="total-th">Delivery Address</th>
+                                    <th class="total-th">Status</th>
+                                    <th class="total-th">Order Date</th>
+                                    <th class="total-th">Delivery Date</th>
+                                    <th class="total-th">Post Company</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%for(var i=0;i< item.length;i++){ %>
+                                <tr>
+                                    <td class="product-col">
+                                        <img src="img/product/<%=item[i].image%>" alt="">
+                                        <div class="pc-title">
+                                            <h4><%=item[i].name%></h4>
+                                        </div>
+                                    </td>
+                                    <td class="total-col">
+                                        <h4><%=item[i].cost%></h4>
+                                    </td>
+                                    <td class="total-col">
+                                        <h4><%=item[i].Address%></h4>
+                                    </td>
+                                    <td class="total-col">
+                                        <h4 style="color: #F51167;"><%=item[i].orderStatus%></h4>
+                                    </td>
+                                    <td class="total-col">
+                                        <h4><%=item[i].orderDate%></h4>
+                                    </td>
+                                    <td class="total-col">
+                                        <h4>Not delivered</h4>
+                                    </td>
+                                    <td class="total-col">
+                                        <h4>Blue Dart</h4>
+                                    </td>
+                                </tr>
+                                <%}%>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 card-right">
+				<a href="/category" class="site-btn sb-dark">Continue shopping</a>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- cart section end -->
+
+<%- include('footer'); -%>

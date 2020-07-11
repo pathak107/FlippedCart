@@ -1,110 +1,105 @@
 <%- include('header.ejs'); -%>
 
 
-	<!-- Page info -->
-	<div class="page-top-info">
-		<div class="container">
-			<h4>Your cart</h4>
-			<div class="site-pagination">
-				<a href="/">Home</a> /
-				<a href="/cart">Your cart</a>
-			</div>
+<!-- Page info -->
+<div class="page-top-info">
+	<div class="container">
+		<h4>Your cart</h4>
+		<div class="site-pagination">
+			<a href="/">Home</a> /
+			<a href="/cart">Your cart</a>
 		</div>
 	</div>
-	<!-- Page info end -->
+</div>
+<!-- Page info end -->
 
 
-	<!-- cart section end -->
-	<section class="cart-section spad">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8">
-					<div class="cart-table">
+<!-- Code for the button -->
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+	crossorigin="anonymous">
+	</script>
+<script>
+	$(document).click(function (event) {
+		var p_id = event.target.id;
+		console.log("Req sent" + p_id)
+		$.ajax({
+			type: 'DELETE',
+			url: `/cart/${p_id}`,
+			success: function (result, status) {
+				console.log(status);
+				if (status == "success") {
+					window.alert("Deleted from the cart !");
+					window.location.href = "/cart";
+				}
+				else if (data.message == "unauthorized") {
+					window.location.href = "/Login";
+				}
+			}
+		});
+	});
+</script>
+
+
+<!-- cart section end -->
+<section class="cart-section spad">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="cart-table">
+					<% if(item.length > 0){ %>
 						<h3>Your Cart</h3>
-						<div class="cart-table-warp">
-							<table>
+						
+					<% }else{ %>
+						<h3>There is nothing in your cart!</h3>
+					<%}%>
+					
+					<div class="cart-table-warp">
+						<table>
 							<thead>
 								<tr>
 									<th class="product-th">Product</th>
-									<th class="quy-th">Quantity</th>
-									<th class="size-th">SizeSize</th>
 									<th class="total-th">Price</th>
 								</tr>
 							</thead>
 							<tbody>
+								<%for(var i=0;i< item.length;i++){ %>
 								<tr>
 									<td class="product-col">
-										<img src="img/cart/1.jpg" alt="">
+										<img src="img/product/<%=item[i].image%>" alt="">
 										<div class="pc-title">
-											<h4>Animal Print Dress</h4>
-											<p>$45.90</p>
+											<h4><%=item[i].name%></h4>
 										</div>
 									</td>
-									<td class="quy-col">
-										<div class="quantity">
-					                        <div class="pro-qty">
-												<input type="text" value="1">
-											</div>
-                    					</div>
+									<td class="total-col">
+										<h4>₹ <%=item[i].cost%></h4>
 									</td>
-									<td class="size-col"><h4>Size M</h4></td>
-									<td class="total-col"><h4>$45.90</h4></td>
+									<td><button id="<%=item[i].p_id%>" class="deleteButton"
+											style="background-color:#F51167; border-radius: 20%; color: white; border: none; padding: 5%;">Remove</button>
+									</td>
 								</tr>
-								<tr>
-									<td class="product-col">
-										<img src="img/cart/2.jpg" alt="">
-										<div class="pc-title">
-											<h4>Ruffle Pink Top</h4>
-											<p>$45.90</p>
-										</div>
-									</td>
-									<td class="quy-col">
-										<div class="quantity">
-					                        <div class="pro-qty">
-												<input type="text" value="1">
-											</div>
-                    					</div>
-									</td>
-									<td class="size-col"><h4>Size M</h4></td>
-									<td class="total-col"><h4>$45.90</h4></td>
-								</tr>
-								<tr>
-									<td class="product-col">
-										<img src="img/cart/3.jpg" alt="">
-										<div class="pc-title">
-											<h4>Skinny Jeans</h4>
-											<p>$45.90</p>
-										</div>
-									</td>
-									<td class="quy-col">
-										<div class="quantity">
-					                        <div class="pro-qty">
-												<input type="text" value="1">
-											</div>
-                    					</div>
-									</td>
-									<td class="size-col"><h4>Size M</h4></td>
-									<td class="total-col"><h4>$45.90</h4></td>
-								</tr>
+								<%}%>
 							</tbody>
 						</table>
 						</div>
-						<div class="total-cost">
-							<h6>Total <span>$99.90</span></h6>
-						</div>
+
+
+						
+
+
+								<div class="total-cost">
+									<h6>Total <span>₹ <%=allItems.total%></span></h6>
 					</div>
 				</div>
-				<div class="col-lg-4 card-right">
-					<form class="promo-code-form">
-						<input type="text" placeholder="Enter promo code">
-						<button>Submit</button>
-					</form>
-					<a href="" class="site-btn">Proceed to checkout</a>
-					<a href="/product" class="site-btn sb-dark">Continue shopping</a>
-				</div>
+			</div>
+			<div class="col-lg-4 card-right">
+				<% if(item.length > 0){ %>
+				<a href="/checkout" class="site-btn">Proceed to checkout</a>
+				<%}%>
+				<a href="/category" class="site-btn sb-dark">Continue shopping</a>
 			</div>
 		</div>
-	</section>
-	<!-- cart section end -->
+	</div>
+</section>
+<!-- cart section end -->
 
 <%- include('footer'); -%>
