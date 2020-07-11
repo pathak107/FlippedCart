@@ -254,6 +254,47 @@ app.get('/orders',(req,res)=>{
 
 
 
+//Admin route
+app.get('/admin',(req,res)=>{
+   res.render('adminLogin',{authStatus:"Authenticate"});
+})
+app.post('/admin',(req,res)=>{
+   if(req.body.userName==="shubham" && req.body.pass==="qwerty"){
+      req.session.adminLoggedIn=true;
+      res.redirect("/admin/allorders")
+   }
+   else{
+      res.render('adminLogin',{authStatus:"User name or password incorrect!"});
+   }
+})
+
+app.use('/admin/',express.static('public'));
+app.get('/admin/allorders',(req,res)=>{
+   if(req.session.adminLoggedIn==undefined)
+   {
+      return res.redirect('/admin');
+   }
+   var query="select o_id,cust_id,UserName,contact,name,cost,image,Address,orderDate,orderStatus from Products natural join orders natural join Customer order by cust_id DESC;";
+   db.all(query,[],(err,rows)=>{
+      if(err) console.log(err);
+      res.render('allorders.ejs',{item:rows});
+   });
+})
+
+app.post('/admin/changeStatus/:o_id',(req,res)=>{
+   if(req.session.adminLoggedIn==undefined)
+   {
+      return res.redirect('/admin');
+   }
+   console.log(req.body.status);
+   var query="UPDATE orders set orderStatus=? where o_id=?"
+   db.run(query,[req.body.status,req.params.o_id],(err)=>{
+      if(err) console.log(err);
+      console.log("Updated Order");
+   });
+   res.redirect('/admin/allorders')
+})
+
 var port = process.env.PORT || 3000
 app.listen(port, function (req, res) {
    console.log("Server started at port 3000");
