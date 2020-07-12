@@ -8,7 +8,7 @@ const bcrypt= require('bcrypt');
 const saltRounds=10;
 
 var sqlite3 = require('sqlite3').verbose()
-var db = new sqlite3.Database('./Database.db',(err)=>{
+var db = new sqlite3.Database('./Database/Database.db',(err)=>{
    if(err) console.log(err);
    console.log("Connected to Database");
 })
